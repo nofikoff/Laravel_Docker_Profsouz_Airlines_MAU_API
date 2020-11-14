@@ -1,0 +1,84 @@
+version: "2"
+
+services:
+  data:
+    image: busybox
+    container_name: "profsoyuz2_data"
+    volumes:
+      - /data
+      - /var/lib/mysql
+
+  redis:
+    image: redis:3.0.7
+    container_name: "profsoyuz2_redis"
+    ports:
+      - "6379:6379"
+    volumes_from:
+      - data
+
+  mysql:
+      image: mysql:5.7
+      container_name: "profsoyuz2_mysql"
+      command: --max_allowed_packet=32505856
+      ports:
+        - "3306:3306"
+      environment:
+        - "MYSQL_ROOT_PASSWORD=secret"
+        - "MYSQL_DATABASE=laravel"
+      volumes_from:
+        - data
+
+  front:
+    image: abiosoft/caddy
+    container_name: "profsoyuz2_caddy"
+    environment:
+      - CADDYPATH=/etc/caddycerts
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/Caddyfile
+      - ./docker/caddy/caddyssl:/etc/caddycerts
+    depends_on:
+      - app
+    volumes_from:
+      - app
+
+  websocket:
+    build: './docker/centrifugo/'
+    container_name: profsoyuz2_websocket
+    ports:
+      - '8000:8000'
+    volumes:
+      - './docker/centrifugo/config.json:/centrifugo/config.json'
+    depends_on:
+      - front
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+  app:
+    image: profsoyuz2_skeleton:build
+    build: .
+    container_name: "profsoyuz2_app"
+    volumes:
+      - .:/app
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/cron/crontab:/etc/cron.d/crontab
+    depends_on:
+      - mysql
+      - redis
+    command: /usr/local/sbin/php-fpm --allow-to-run-as-root
+
+  cron:
+    image: profsoyuz2_skeleton:build
+    build: .
+    container_name: "profsoyuz2_cron"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - redis
+      - app
+    command: /usr/local/bin/start

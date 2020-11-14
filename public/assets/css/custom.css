@@ -1,0 +1,13 @@
+.post-content img{
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+.comment-file {
+    display: none;
+}
