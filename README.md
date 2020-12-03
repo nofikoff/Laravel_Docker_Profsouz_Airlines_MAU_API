@@ -9,10 +9,10 @@
 Языковые версии шаблонов приложения: русский, украинский, английский.
 При переключении языка – переключается интерфейс и все служебные сообщения системы. Контент смешанный : русский, украинский, английский и НЕ переводится специально.
 
-* Проект БД
-* Техническое задание
-* Manual
-* Эскизы интерфейса
+* Проект БД схема
+* Техническое задание фронтенд/бэкенд
+* [User manual](https://github.com/nofikoff/Laravel_Docker_Profsouz_Airlines_MAU_API/blob/master/user-manual.pdf)
+* [Эскизы интерфейса](https://github.com/nofikoff/Laravel_Docker_Profsouz_Airlines_MAU_API/blob/master/mobile-app-draft.pdf)
 
 
 # Мобильное приложение реализовано отдельно на Ionic + Cordova под Android / iOS
