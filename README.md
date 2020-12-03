@@ -15,6 +15,6 @@
 * [Эскизы интерфейса](https://github.com/nofikoff/Laravel_Docker_Profsouz_Airlines_MAU_API/blob/master/mobile-app-draft.pdf)
 
 
-# Мобильное приложение реализовано отдельно на Ionic + Cordova под Android / iOS
+# Мобильное приложение реализовано на Ionic + Cordova под Android / iOS
 
 
